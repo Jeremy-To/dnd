@@ -1,0 +1,28 @@
+.item {
+	background-color: #f8f9fa;
+	border: 1px solid #e9ecef;
+	border-radius: 6px;
+	padding: 1rem;
+	user-select: none;
+	position: relative;
+	transition: all 0.2s ease-in-out, transform 0.15s ease-in-out;
+	touch-action: none;
+}
+
+.item:hover {
+	background-color: #e9ecef;
+	transform: translateY(-2px);
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.item:active {
+	cursor: grabbing;
+}
+
+.dragging {
+	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+	background-color: #ffffff;
+	border: 1px solid #007bff;
+	transform: scale(1.02);
+	z-index: 999;
+}
