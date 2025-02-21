@@ -1,0 +1,9 @@
+// Install these dependencies
+npm install --save-dev 
+  @testing-library/react 
+  @testing-library/jest-dom 
+  @testing-library/user-event
+  jest
+  @types/jest
+  ts-jest
+  msw // For API mocking
