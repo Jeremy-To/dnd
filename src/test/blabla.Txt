@@ -1,9 +1,57 @@
-// Install these dependencies
-npm install --save-dev 
-  @testing-library/react 
-  @testing-library/jest-dom 
-  @testing-library/user-event
-  jest
-  @types/jest
-  ts-jest
-  msw // For API mocking
+module.exports = {
+  preset: 'ts-jest',
+  testEnvironment: 'jsdom',
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
+  transform: {
+    '^.+\\.(ts|tsx)$': 'ts-jest',
+  },
+  setupFilesAfterEnv: ['@testing-library/jest-dom/extend-expect'],
+  collectCoverage: true,
+  coverageDirectory: 'coverage',
+  coverageReporters: ['text', 'lcov', 'html'],
+  collectCoverageFrom: [
+    'src/**/*.{ts,tsx}',
+    '!src/**/*.d.ts',
+    '!src/**/index.ts',
+    '!src/**/*.stories.{ts,tsx}',
+    '!src/mocks/**/*.{ts,tsx}',
+    '!**/node_modules/**'
+  ]
+}
+
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "esModuleInterop": true,
+    "types": ["jest", "node", "@testing-library/jest-dom"]
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx", "test/**/*.ts", "test/**/*.tsx"]
+}
+
+"scripts": {
+  "test": "jest",
+  "test:coverage": "jest --coverage",
+  "test:watch": "jest --watch"
+}
+
+yarn add --dev vitest @testing-library/react jsdom @testing-library/jest-dom
+
+import { defineConfig } from 'vitest/config';
+import react from '@vitejs/plugin-react';
+
+export default defineConfig({
+  plugins: [react()],
+  test: {
+    environment: 'jsdom',
+    globals: true,
+    coverage: {
+      provider: 'c8', // or 'istanbul'
+      reporter: ['text', 'json', 'html'],
+      include: ['src/**/*.{ts,tsx}'],
+      exclude: ['src/**/*.d.ts', 'src/**/index.ts', 'src/**/*.stories.{ts,tsx}']
+    }
+  }
+});
+
+yarn test:coverage
