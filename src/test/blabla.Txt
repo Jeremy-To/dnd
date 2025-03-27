@@ -1,57 +1,47 @@
-module.exports = {
-  preset: 'ts-jest',
-  testEnvironment: 'jsdom',
-  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
-  transform: {
-    '^.+\\.(ts|tsx)$': 'ts-jest',
-  },
-  setupFilesAfterEnv: ['@testing-library/jest-dom/extend-expect'],
-  collectCoverage: true,
-  coverageDirectory: 'coverage',
-  coverageReporters: ['text', 'lcov', 'html'],
-  collectCoverageFrom: [
-    'src/**/*.{ts,tsx}',
-    '!src/**/*.d.ts',
-    '!src/**/index.ts',
-    '!src/**/*.stories.{ts,tsx}',
-    '!src/mocks/**/*.{ts,tsx}',
-    '!**/node_modules/**'
-  ]
-}
+I see you're encountering an error with Jest in your React TypeScript project. The error message indicates there's a problem with the `setupFilesAfterEnv` configuration - specifically:
 
-{
-  "extends": "./tsconfig.json",
-  "compilerOptions": {
-    "jsx": "react-jsx",
-    "esModuleInterop": true,
-    "types": ["jest", "node", "@testing-library/jest-dom"]
-  },
-  "include": ["src/**/*.ts", "src/**/*.tsx", "test/**/*.ts", "test/**/*.tsx"]
-}
+`Module @testing-library/jest-dom in the setupFilesAfterEnv option was not found.`
 
-"scripts": {
-  "test": "jest",
-  "test:coverage": "jest --coverage",
-  "test:watch": "jest --watch"
-}
+This means Jest can't find the @testing-library/jest-dom module that's being referenced in your configuration file.
 
-yarn add --dev vitest @testing-library/react jsdom @testing-library/jest-dom
+To fix this issue:
 
-import { defineConfig } from 'vitest/config';
-import react from '@vitejs/plugin-react';
+1. First, make sure you have @testing-library/jest-dom installed:
+   ```bash
+   yarn add --dev @testing-library/jest-dom
+   ```
 
-export default defineConfig({
-  plugins: [react()],
-  test: {
-    environment: 'jsdom',
-    globals: true,
-    coverage: {
-      provider: 'c8', // or 'istanbul'
-      reporter: ['text', 'json', 'html'],
-      include: ['src/**/*.{ts,tsx}'],
-      exclude: ['src/**/*.d.ts', 'src/**/index.ts', 'src/**/*.stories.{ts,tsx}']
-    }
-  }
-});
+2. Create or update your Jest configuration file. You can do this in one of these ways:
+   - Create a jest.config.js file in your project root
+   - Add Jest configuration to your package.json under a "jest" key
 
-yarn test:coverage
+3. In your Jest config, make sure the path to the jest-dom setup file is correct:
+
+   ```javascript
+   // jest.config.js
+   module.exports = {
+     setupFilesAfterEnv: ['@testing-library/jest-dom/extend-expect'],
+     // other configuration...
+   }
+   ```
+
+4. If that doesn't work, try creating a setup file explicitly:
+   ```bash
+   mkdir -p src/setupTests
+   ```
+
+   Create a file `src/setupTests/jest-dom.js` with:
+   ```javascript
+   import '@testing-library/jest-dom/extend-expect';
+   ```
+
+   Then update your Jest config:
+   ```javascript
+   // jest.config.js
+   module.exports = {
+     setupFilesAfterEnv: ['<rootDir>/src/setupTests/jest-dom.js'],
+     // other configuration...
+   }
+   ```
+
+Try running your tests again after making these changes.
