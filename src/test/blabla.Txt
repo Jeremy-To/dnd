@@ -1,3 +1,6 @@
+Here's a complete `vitest.config.ts` file that you can use for your TypeScript React project:
+
+```typescript
 import { defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react';
 import { resolve } from 'path';
@@ -29,3 +32,27 @@ export default defineConfig({
     exclude: ['node_modules', 'dist', '.idea', '.git', '.cache']
   }
 });
+```
+
+You'll also need to create a `setupTests.ts` file in your `src` directory:
+
+```typescript
+// src/setupTests.ts
+import '@testing-library/jest-dom';
+```
+
+And make sure to install the necessary dependencies:
+
+```bash
+yarn add --dev vitest @testing-library/react @testing-library/jest-dom jsdom @vitejs/plugin-react @vitest/coverage-v8
+```
+
+You can then add test scripts to your package.json:
+
+```json
+"scripts": {
+  "test": "vitest",
+  "test:run": "vitest run",
+  "test:coverage": "vitest run --coverage"
+}
+```
